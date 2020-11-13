@@ -3,7 +3,7 @@ class Band {
   String name;
   int votes;
 
-  Band({this.id, this.name, this.votes});
+  Band({this.id, this.name, this.votes: 0});
 
   Band fromJson(Map<String, dynamic> json) => Band(
         id: json['id'],
