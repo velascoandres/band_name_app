@@ -26,13 +26,35 @@ class _HomePageState extends State<HomePage> {
       ),
       body: ListView.builder(
         itemCount: bands.length,
-        itemBuilder: (context, index) => _buildListTile(bands[index]),
+        itemBuilder: (context, index) => _buildDismissible(index),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         elevation: 1,
         onPressed: _addNewBand,
       ),
+    );
+  }
+
+  Dismissible _buildDismissible(Band band) {
+    return Dismissible(
+      key: Key(band.id),
+      direction: DismissDirection.startToEnd,
+      background: Container(
+        padding: EdgeInsets.only(left: 8.0),
+        color: Colors.red,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Delete Band',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+      child: _buildListTile(band),
+      onDismissed: (direction) => deleteBand(band),
     );
   }
 
@@ -117,6 +139,12 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
     }
     Navigator.pop(context);
+  }
+
+  void deleteBand(Band band) {
+    final index = bands.indexOf(band);
+    bands.removeAt(index);
+    setState(() {});
   }
 
   get ultimoId => bands.last.id;
