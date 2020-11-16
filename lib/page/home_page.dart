@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: ListView.builder(
         itemCount: bands.length,
-        itemBuilder: (context, index) => _buildDismissible(index),
+        itemBuilder: (context, index) => _buildDismissible(bands[index]),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
