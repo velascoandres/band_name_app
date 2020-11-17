@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'package:band_name_app/services/socket_service.dart';
+import 'package:band_name_app/services/socket_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:band_name_app/bulks/bands_bulk.dart';
 import 'package:band_name_app/models/band_model.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -17,12 +20,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final socketService = Provider.of<SocketService>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'BandNames',
           style: TextStyle(color: Colors.black87),
         ),
+        elevation: 1,
+        actions: [
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            child: this._buildConnectionStatus(socketService),
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: bands.length,
@@ -33,6 +45,20 @@ class _HomePageState extends State<HomePage> {
         elevation: 1,
         onPressed: _addNewBand,
       ),
+    );
+  }
+
+  Widget _buildConnectionStatus(SocketService socketService) {
+    final tieneConexion = socketService.serverStatus == ServerStatus.Online;
+    if (tieneConexion) {
+      return Icon(
+        Icons.check_circle,
+        color: Colors.greenAccent,
+      );
+    }
+    return Icon(
+      Icons.offline_bolt,
+      color: Colors.red[300],
     );
   }
 
