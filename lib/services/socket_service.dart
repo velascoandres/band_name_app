@@ -28,7 +28,7 @@ class SocketService with ChangeNotifier {
       notifyListeners();
     });
     socket.on(
-      'mensaje',
+      'nuevo-mensaje',
       (data) {
         print(data);
         notifyListeners();
