@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:band_name_app/services/socket_service.dart';
-import 'package:band_name_app/services/socket_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +6,7 @@ import 'package:band_name_app/bulks/bands_bulk.dart';
 import 'package:band_name_app/models/band_model.dart';
 import 'package:provider/provider.dart';
 
+import 'package:band_name_app/services/socket_service.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
 
