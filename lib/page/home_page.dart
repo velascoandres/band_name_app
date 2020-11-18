@@ -1,10 +1,8 @@
 import 'dart:io';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:band_name_app/bulks/bands_bulk.dart';
 import 'package:band_name_app/models/band_model.dart';
 import 'package:provider/provider.dart';
 
@@ -32,12 +30,12 @@ class _HomePageState extends State<HomePage> {
         final rawBands = payload['bands'] as List<dynamic>;
         this.bands = rawBands
             .map(
-              ( bandRaw) => Band.fromJson(bandRaw as Map<String, dynamic>),
+              (bandRaw) => Band.fromJson(bandRaw as Map<String, dynamic>),
             )
             .toList();
+        setState(() {});
       },
     );
-    print(bands);
     super.initState();
   }
 
@@ -116,6 +114,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   ListTile _buildListTile(Band band) {
+    final socketService = Provider.of<SocketService>(context, listen: false);
     final String iniciales = band.name.substring(0, 2);
     return ListTile(
       leading: CircleAvatar(
@@ -127,7 +126,9 @@ class _HomePageState extends State<HomePage> {
         '${band.votes}',
         style: TextStyle(fontSize: 30),
       ),
-      onTap: () {},
+      onTap: () {
+        socketService.emit('vote', {'id': band.id});
+      },
     );
   }
 
