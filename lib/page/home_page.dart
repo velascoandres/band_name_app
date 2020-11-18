@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +9,7 @@ import 'package:band_name_app/models/band_model.dart';
 import 'package:provider/provider.dart';
 
 import 'package:band_name_app/services/socket_service.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
 
@@ -15,7 +18,36 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Band> bands = bandsBulks;
+  List<Band> bands = [];
+
+  @override
+  void initState() {
+    final SocketService socketService =
+        Provider.of<SocketService>(context, listen: false);
+
+    socketService.socket.on(
+      'active-bands',
+      (payload) {
+        print(payload['bands']);
+        final rawBands = payload['bands'] as List<dynamic>;
+        this.bands = rawBands
+            .map(
+              ( bandRaw) => Band.fromJson(bandRaw as Map<String, dynamic>),
+            )
+            .toList();
+      },
+    );
+    print(bands);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    final SocketService socketService =
+        Provider.of<SocketService>(context, listen: false);
+    socketService.socket.off('active-bands');
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ class Band {
 
   Band({this.id, this.name, this.votes: 0});
 
-  Band fromJson(Map<String, dynamic> json) => Band(
+  factory Band.fromJson(Map<String, dynamic> json) => Band(
         id: json['id'],
         name: json['name'],
         votes: json['votes'],
