@@ -187,13 +187,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void addBandToList(String name) {
+    final SocketService socketService =
+        Provider.of<SocketService>(context, listen: false);
     if (name.length > 1) {
-      bands.add(
-        Band(
-          id: generarId,
-          name: name,
-        ),
-      );
+      socketService.emit('add-band', {'name': name});
       setState(() {});
     }
     Navigator.pop(context);
