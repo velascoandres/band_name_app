@@ -23,20 +23,19 @@ class _HomePageState extends State<HomePage> {
     final SocketService socketService =
         Provider.of<SocketService>(context, listen: false);
 
-    socketService.socket.on(
-      'active-bands',
-      (payload) {
-        print(payload['bands']);
-        final rawBands = payload['bands'] as List<dynamic>;
-        this.bands = rawBands
-            .map(
-              (bandRaw) => Band.fromJson(bandRaw as Map<String, dynamic>),
-            )
-            .toList();
-        setState(() {});
-      },
-    );
+    socketService.socket.on('active-bands', this._handleActiveBands);
     super.initState();
+  }
+
+  void _handleActiveBands(dynamic payload) {
+    print(payload['bands']);
+    final rawBands = payload['bands'] as List<dynamic>;
+    this.bands = rawBands
+        .map(
+          (bandRaw) => Band.fromJson(bandRaw as Map<String, dynamic>),
+        )
+        .toList();
+    setState(() {});
   }
 
   @override
@@ -126,9 +125,7 @@ class _HomePageState extends State<HomePage> {
         '${band.votes}',
         style: TextStyle(fontSize: 30),
       ),
-      onTap: () {
-        socketService.emit('vote', {'id': band.id});
-      },
+      onTap: () => socketService.emit('vote', {'id': band.id}),
     );
   }
 
@@ -145,7 +142,7 @@ class _HomePageState extends State<HomePage> {
   Future showDialogAndroid(TextEditingController textEditingController) {
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (_) => AlertDialog(
         title: Text('New Band Name'),
         content: TextField(
           controller: textEditingController,
