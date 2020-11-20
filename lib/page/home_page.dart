@@ -191,15 +191,16 @@ class _HomePageState extends State<HomePage> {
         Provider.of<SocketService>(context, listen: false);
     if (name.length > 1) {
       socketService.emit('add-band', {'name': name});
-      setState(() {});
+      // setState(() {});
     }
     Navigator.pop(context);
   }
 
   void deleteBand(Band band) {
-    final index = bands.indexOf(band);
-    bands.removeAt(index);
-    setState(() {});
+    final SocketService socketService =
+        Provider.of<SocketService>(context, listen: false);
+    socketService.emit('delete-band', {'id': band.id});
+    // setState(() {});
   }
 
   get ultimoId => bands.last.id;
