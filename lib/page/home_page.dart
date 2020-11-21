@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:band_name_app/models/band_model.dart';
+import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 
 import 'package:band_name_app/services/socket_service.dart';
@@ -64,14 +65,39 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: bands.length,
-        itemBuilder: (context, index) => _buildDismissible(bands[index]),
+      body: Column(
+        children: [
+          this._buildPieChart(),
+          SizedBox(height: 20),
+          this._buildBandList(),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         elevation: 1,
         onPressed: _addNewBand,
+      ),
+    );
+  }
+
+  Widget _buildPieChart() {
+    Map<String, double> dataMap = {
+      "Flutter": 5,
+      "React": 3,
+      "Xamarin": 2,
+      "Ionic": 2,
+    };
+    return PieChart(
+      dataMap: dataMap,
+    );
+  }
+
+  Widget _buildBandList() {
+    // toma todo el espacio disponible
+    return Expanded(
+      child: ListView.builder(
+        itemCount: bands.length,
+        itemBuilder: (context, index) => _buildDismissible(bands[index]),
       ),
     );
   }
