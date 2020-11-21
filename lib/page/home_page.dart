@@ -82,14 +82,22 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildPieChart() {
     Map<String, double> dataMap = new Map();
+
     bands.forEach(
       (band) => dataMap.putIfAbsent(band.name, () => band.votes.toDouble()),
     );
+
+
     return Container(
+      padding: EdgeInsets.all(10),
       width: double.infinity,
-      height: 200,
+      height: 325,
       child: PieChart(
         dataMap: dataMap,
+        animationDuration: Duration(milliseconds: 800),
+        chartLegendSpacing: 32,
+        initialAngleInDegree: 0,
+        chartType: ChartType.ring,
       ),
     );
   }
