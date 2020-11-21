@@ -81,14 +81,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildPieChart() {
-    Map<String, double> dataMap = {
-      "Flutter": 5,
-      "React": 3,
-      "Xamarin": 2,
-      "Ionic": 2,
-    };
-    return PieChart(
-      dataMap: dataMap,
+    Map<String, double> dataMap = new Map();
+    bands.forEach(
+      (band) => dataMap.putIfAbsent(band.name, () => band.votes.toDouble()),
+    );
+    return Container(
+      width: double.infinity,
+      height: 200,
+      child: PieChart(
+        dataMap: dataMap,
+      ),
     );
   }
 
